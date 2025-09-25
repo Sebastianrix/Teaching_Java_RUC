@@ -8,9 +8,16 @@ public class Aflevering2 {
         Scanner input = new Scanner(System.in);
 
         System.out.println("Hvad er din temperatur?");
-        float temp = input.nextFloat();
+        double temp = input.nextDouble();
         if (temp < -20 || temp > 80){
             myFailure("TempOutOfBound");
+            return;
+        }
+
+        System.out.println("Hvilen temperatur ønsker du?");
+        double wishTemp = input.nextDouble();
+        if (wishTemp <-20 || wishTemp > 80){
+            myFailure("WishTempOutOfBound");
             return;
         }
 
@@ -29,47 +36,40 @@ public class Aflevering2 {
             return;
         }
 
-        System.out.println("Hvilen temperatur ønsker du?");
-        float wishTemp = input.nextFloat();
-        if (wishTemp <-20 || wishTemp > 80){
-            myFailure("WishTempOutOfBound");
-            return;
-        }
-
-        boolean Nattilstand = false;
+        // Check for Nattilstand
+        boolean nattilstand = false;
         if (klok <= 6 || klok >= 22){
-            Nattilstand = true;
+            nattilstand = true;
             wishTemp = wishTemp - 1;
         }
 
+        // Check for frostbeskyttelse
         boolean frostbeskyttelse = false;
         if (temp < 5){
             frostbeskyttelse = true;
         }
 
+        // Grænserne for interval
         double upperBound = wishTemp+0.5;
         double lowerBound = wishTemp-0.5;
 
         String decision = "";
-        if (frostbeskyttelse){decision="HEAT";}
-        else if(vindue.equalsIgnoreCase("Y")){decision="HOLD";}
-        else if (temp>lowerBound && temp<upperBound ){decision="HOLD";}
-        else if (temp>upperBound){decision="HEAT";}
-        else {decision="COOL";}
+        if (frostbeskyttelse){
+            decision="HEAT";
+        } else if(vindue.equalsIgnoreCase("Y")){
+            decision="HOLD";
+        } else if (temp>=lowerBound && temp<=upperBound ){
+            decision="HOLD";
+        } else if (temp<upperBound){
+            decision="HEAT";
+        } else {
+            decision="COOL";
+        }
 
-
-
-        myResult(decision, Nattilstand, wishTemp);
-
-
-
+        myResult(decision, nattilstand, wishTemp);
     }
 
 
-
-
-
-       // System.out.println("Temp : "+temp+"\nKlokken : "+klok+"\nNattilstand : "+Nattilstand+"\nVindue : "+vindue+"\nØnsket temp : "+wishTemp);
     public static void myFailure(String input) {
 
         switch (input) {
@@ -88,19 +88,18 @@ public class Aflevering2 {
         }
     }
 
-    public static void myResult(String input, boolean Nattilstand, double wishTemp){
+    public static void myResult(String input, boolean nattilstand, double wishTemp){
 
         switch(input){
             case "HOLD":
-                System.out.println("--- Beslutning ---\nNatilstand: "+Nattilstand+" (effektiv ønskede temperatur = "+wishTemp+"°C"+"\nHandling: HOLD");
+                System.out.println("--- Beslutning ---\nNatilstand: "+nattilstand+" (effektiv ønskede temperatur = "+wishTemp+"°C"+"\nHandling: HOLD");
                 break;
             case "HEAT":
-                System.out.println("--- Beslutning ---\nNatilstand: "+Nattilstand+" (effektiv ønskede temperatur = "+wishTemp+"°C"+"\nHandling: HEAT");
+                System.out.println("--- Beslutning ---\nNatilstand: "+nattilstand+" (effektiv ønskede temperatur = "+wishTemp+"°C"+"\nHandling: HEAT");
                 break;
             case "COOL":
-                System.out.println("--- Beslutning ---\nNatilstand: "+Nattilstand+" (effektiv ønskede temperatur = "+wishTemp+"°C"+"\nHandling: COOL");
+                System.out.println("--- Beslutning ---\nNatilstand: "+nattilstand+" (effektiv ønskede temperatur = "+wishTemp+"°C"+"\nHandling: COOL");
                 break;
         }
     }
-
 }
