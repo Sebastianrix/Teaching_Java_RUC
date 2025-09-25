@@ -37,7 +37,7 @@ public class Aflevering2 {
         }
 
         boolean Nattilstand = false;
-        if (klok > 6 && klok < 22){
+        if (klok <= 6 || klok >= 22){
             Nattilstand = true;
             wishTemp = wishTemp - 1;
         }
