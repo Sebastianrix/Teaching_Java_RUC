@@ -4,24 +4,29 @@ import java.util.Scanner;
 public class Aflevering2 {
 
     public static void main(String[] args) {
+
         Scanner input = new Scanner(System.in);
 
         System.out.println("Hvad er din temperatur?");
         float temp = input.nextFloat();
-        if (temp < -20 || temp > 80){ myResult("TempOutOfBound");}
+        if (temp < -20 || temp > 80){
+            myFailure("TempOutOfBound");}
 
         System.out.println("Hvad er klokken?");
         int klok = input.nextInt();
         input.nextLine();
-        if (klok < 0 || klok > 24){ myResult("KlokkeOutOfBound");}
+        if (klok < 0 || klok > 24){
+            myFailure("KlokkeOutOfBound");}
 
         System.out.println("Er vinduet åbent? Type: (Y/N)");
         String vindue = input.nextLine();
-        if (vindue != "Y" || vindue != "y" || vindue != "N" || vindue != "n"){ myResult("VindueErForkertInput");}
+        if (vindue != "Y" || vindue != "y" || vindue != "N" || vindue != "n"){
+            myFailure("VindueErForkertInput");}
 
         System.out.println("Hvilen temperatur ønsker du?");
         float wishTemp = input.nextFloat();
-        if (wishTemp <-20 || wishTemp > 80){ myResult("WishTemp");}
+        if (wishTemp <-20 || wishTemp > 80){
+            myFailure("WishTempOutOfBound");}
 
         boolean Nattilstand = false;
 
@@ -34,12 +39,12 @@ public class Aflevering2 {
 
         String decision = "";
         if (wishTemp-0.5<=temp || wishTemp+0.5<=temp && wishTemp-0.5>=temp || wishTemp+0.5>=temp){decision="HOLD";}
-        if (wishTemp-0.5<=temp || wishTemp+0.5<=temp){decision="HEAT";}
-        if (wishTemp-0.5>=temp || wishTemp+0.5>=temp){decision="COOL";}
+        else if (wishTemp-0.5<=temp || wishTemp+0.5<=temp){decision="HEAT";}
+        else {decision="COOL";}
 
 
 
-        myResult(decision);
+        myResult(decision, Nattilstand, wishTemp);
 
 
 
@@ -50,19 +55,9 @@ public class Aflevering2 {
 
 
        // System.out.println("Temp : "+temp+"\nKlokken : "+klok+"\nNattilstand : "+Nattilstand+"\nVindue : "+vindue+"\nØnsket temp : "+wishTemp);
-         public static void myResult(String input){
+    public static void myFailure(String input) {
 
-
-        switch(input){
-            case "HOLD":
-                System.out.println("--- Beslutning ---\nNatilstand: "+Nattilstand+" (effektiv ønskede temperatur = "+wishTemp+".0°C"+"\nHandling: HOLD");
-                break;
-            case "HEAT":
-                System.out.println("--- Beslutning ---\nNatilstand: "+Nattilstand+" (effektiv ønskede temperatur = "+wishTemp+".0°C"+"\nHandling: HEAT");
-                break;
-            case "COOL":
-                System.out.println("--- Beslutning ---\nNatilstand: "+Nattilstand+" (effektiv ønskede temperatur = "+wishTemp+".0°C"+"\nHandling: HOLD");
-                break;
+        switch (input) {
             case "TempOutOfBound":
                 System.out.println("Input fejl: Din temperatur er ude for realistisk rekkevidde (Skal være mellem '-20/+80'");
                 break;
@@ -75,8 +70,22 @@ public class Aflevering2 {
             case "VindueErForkertInput":
                 System.out.println("Input fejl: Du kan kun svare Y/N til on vinduet er åbent");
                 break;
-
         }
-
     }
+
+    public static void myResult(String input, boolean Nattilstand, float wishTemp){
+
+        switch(input){
+            case "HOLD":
+                System.out.println("--- Beslutning ---\nNatilstand: "+Nattilstand+" (effektiv ønskede temperatur = "+wishTemp+".0°C"+"\nHandling: HOLD");
+                break;
+            case "HEAT":
+                System.out.println("--- Beslutning ---\nNatilstand: "+Nattilstand+" (effektiv ønskede temperatur = "+wishTemp+".0°C"+"\nHandling: HEAT");
+                break;
+            case "COOL":
+                System.out.println("--- Beslutning ---\nNatilstand: "+Nattilstand+" (effektiv ønskede temperatur = "+wishTemp+".0°C"+"\nHandling: HOLD");
+                break;
+        }
+    }
+
 }
