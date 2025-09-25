@@ -20,7 +20,7 @@ public class Aflevering2 {
 
         System.out.println("Er vinduet åbent? Type: (Y/N)");
         String vindue = input.nextLine();
-        if (vindue != "Y" || vindue != "y" || vindue != "N" || vindue != "n"){
+        if (vindue != "Y" && vindue != "y" && vindue != "N" && vindue != "n"){
             myFailure("VindueErForkertInput");}
 
         System.out.println("Hvilen temperatur ønsker du?");
