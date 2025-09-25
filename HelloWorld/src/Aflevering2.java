@@ -10,37 +10,50 @@ public class Aflevering2 {
         System.out.println("Hvad er din temperatur?");
         float temp = input.nextFloat();
         if (temp < -20 || temp > 80){
-            myFailure("TempOutOfBound");}
+            myFailure("TempOutOfBound");
+            return;
+        }
 
         System.out.println("Hvad er klokken?");
         int klok = input.nextInt();
         input.nextLine();
-        if (klok < 0 || klok > 24){
-            myFailure("KlokkeOutOfBound");}
+        if (klok < 0 || klok > 23){
+            myFailure("KlokkeOutOfBound");
+            return;
+        }
 
         System.out.println("Er vinduet åbent? Type: (Y/N)");
         String vindue = input.nextLine();
-        if (vindue != "Y" && vindue != "y" && vindue != "N" && vindue != "n"){
-            myFailure("VindueErForkertInput");}
+        if (!vindue.equalsIgnoreCase("Y") && !vindue.equalsIgnoreCase("N")){
+            myFailure("VindueErForkertInput");
+            return;
+        }
 
         System.out.println("Hvilen temperatur ønsker du?");
         float wishTemp = input.nextFloat();
         if (wishTemp <-20 || wishTemp > 80){
-            myFailure("WishTempOutOfBound");}
+            myFailure("WishTempOutOfBound");
+            return;
+        }
 
         boolean Nattilstand = false;
-
-        if (klok < 6 && klok > 22){
+        if (klok > 6 && klok < 22){
             Nattilstand = true;
             wishTemp = wishTemp - 1;
         }
 
+        boolean frostbeskyttelse = false;
+        if (temp < 5){
+            frostbeskyttelse = true;
+        }
 
         double upperBound = wishTemp+0.5;
         double lowerBound = wishTemp-0.5;
 
         String decision = "";
-        if (temp>lowerBound && temp<upperBound ){decision="HOLD";}
+        if (frostbeskyttelse){decision="HEAT";}
+        else if(vindue.equalsIgnoreCase("Y")){decision="HOLD";}
+        else if (temp>lowerBound && temp<upperBound ){decision="HOLD";}
         else if (temp>upperBound){decision="HEAT";}
         else {decision="COOL";}
 
@@ -61,7 +74,7 @@ public class Aflevering2 {
 
         switch (input) {
             case "TempOutOfBound":
-                System.out.println("Input fejl: Din temperatur er ude for realistisk rekkevidde (Skal være mellem '-20/+80'");
+                System.out.println("Input fejl: Din temperatur er ude for realistisk rekkevidde (Skal være mellem '-20/+80')");
                 break;
             case "WishTempOutOfBound":
                 System.out.println("Input fejl: Din ønskede temperatur er ude for realistisk rekkevidde (Skal være mellem '-20/+80'");
@@ -79,13 +92,13 @@ public class Aflevering2 {
 
         switch(input){
             case "HOLD":
-                System.out.println("--- Beslutning ---\nNatilstand: "+Nattilstand+" (effektiv ønskede temperatur = "+wishTemp+".0°C"+"\nHandling: HOLD");
+                System.out.println("--- Beslutning ---\nNatilstand: "+Nattilstand+" (effektiv ønskede temperatur = "+wishTemp+"°C"+"\nHandling: HOLD");
                 break;
             case "HEAT":
-                System.out.println("--- Beslutning ---\nNatilstand: "+Nattilstand+" (effektiv ønskede temperatur = "+wishTemp+".0°C"+"\nHandling: HEAT");
+                System.out.println("--- Beslutning ---\nNatilstand: "+Nattilstand+" (effektiv ønskede temperatur = "+wishTemp+"°C"+"\nHandling: HEAT");
                 break;
             case "COOL":
-                System.out.println("--- Beslutning ---\nNatilstand: "+Nattilstand+" (effektiv ønskede temperatur = "+wishTemp+".0°C"+"\nHandling: HOLD");
+                System.out.println("--- Beslutning ---\nNatilstand: "+Nattilstand+" (effektiv ønskede temperatur = "+wishTemp+"°C"+"\nHandling: COOL");
                 break;
         }
     }
