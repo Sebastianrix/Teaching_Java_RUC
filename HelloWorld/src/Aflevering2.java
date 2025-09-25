@@ -36,10 +36,12 @@ public class Aflevering2 {
         }
 
 
+        double upperBound = wishTemp+0.5;
+        double lowerBound = wishTemp-0.5;
 
         String decision = "";
-        if (wishTemp-0.5<=temp || wishTemp+0.5<=temp && wishTemp-0.5>=temp || wishTemp+0.5>=temp){decision="HOLD";}
-        else if (wishTemp-0.5<=temp || wishTemp+0.5<=temp){decision="HEAT";}
+        if (temp>lowerBound && temp<upperBound ){decision="HOLD";}
+        else if (temp>upperBound){decision="HEAT";}
         else {decision="COOL";}
 
 
@@ -73,7 +75,7 @@ public class Aflevering2 {
         }
     }
 
-    public static void myResult(String input, boolean Nattilstand, float wishTemp){
+    public static void myResult(String input, boolean Nattilstand, double wishTemp){
 
         switch(input){
             case "HOLD":
